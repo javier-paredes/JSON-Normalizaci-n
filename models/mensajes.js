@@ -9,6 +9,7 @@ const schema = mongoose.Schema({
         alias: { type: String },
         avatar: { type: String }
     },
+    fyh: { type: String },
     text: { type: String }
 }, { strict: false });
 

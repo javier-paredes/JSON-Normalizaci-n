@@ -1,9 +1,12 @@
 const socket = io.connect();
+const schema = normalizr.schema
+const denormalize = normalizr.denormalize
 
 function render(data) {
-    console.log(JSON.stringify(data))
-    let html = data.map(function (elem, index) {
-        console.log('AUTOR!!!' + elem.autor)
+    console.log(JSON.stringify('!!!!!DATA !!!!!' + JSON.stringify(data.mensajes, null, 3)))
+
+    let html = data.mensajes.map(function (elem, index) {
+       
         return (`
         <div>
             <b style="color:blue;">${elem.autor.email}</b> 
@@ -15,7 +18,10 @@ function render(data) {
     document.getElementById('messages').innerHTML = html;
 }
 
-socket.on('messages', async function (data) {
+
+socket.on('messages', function (data) {
+
+    // console.log("!!!!!DATA!!!!!" + JSON.stringify(data, null, 3))
 
     const autorSchema = new schema.Entity('autor', {}, { idAttribute: 'nombre' });
 
@@ -24,11 +30,11 @@ socket.on('messages', async function (data) {
     }, { idAttribute: '_id' })
 
     const mensajesSchema = new schema.Entity('mensajes', {
-        mensajes: [mensajeSchema]
+        msjs: [mensajeSchema]
     }, { idAttribute: 'id' })
 
     const desnormalizado = denormalize(data.result, mensajesSchema, data.entities);
-    console.log(desnormalizado)
+    console.log("!!!!!DESNORMALIZADO!!!!!" + JSON.stringify(desnormalizado, null, 3))
     render(desnormalizado);
 });
 

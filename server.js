@@ -204,8 +204,7 @@ io.on('connection', async socket => {
 
         await Mensajes.guardar(data)
 
-        let mensajesDB = await Mensajes.getAll()
-     
+        let mensajesDB = await Mensajes.getAll()     
 
         const autorSchema = new schema.Entity('autor', {}, { idAttribute: 'nombre' });
 
@@ -214,12 +213,14 @@ io.on('connection', async socket => {
         }, { idAttribute: '_id' })
 
         const mensajesSchema = new schema.Entity('mensajes', {
-            mensajes: [mensajeSchema]
+            msjs: [mensajeSchema]
         }, {idAttribute: 'id'})
 
         const mensajesNormalizados = normalize(mensajesDB, mensajesSchema)
                 
         messages.push(mensajesDB);
+
+        console.log(mensajesDB)
 
         console.log(mensajesNormalizados)
             
